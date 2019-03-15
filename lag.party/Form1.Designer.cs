@@ -65,7 +65,7 @@
             this.cutUploadButton.Location = new System.Drawing.Point(351, 101);
             this.cutUploadButton.Name = "cutUploadButton";
             this.cutUploadButton.Size = new System.Drawing.Size(119, 33);
-            this.cutUploadButton.TabIndex = 0;
+            this.cutUploadButton.TabIndex = 8;
             this.cutUploadButton.Text = "Cut and Upload";
             this.cutUploadButton.UseVisualStyleBackColor = true;
             this.cutUploadButton.Click += new System.EventHandler(this.cutUploadButton_Click);
@@ -117,7 +117,7 @@
             this.browseButton.Location = new System.Drawing.Point(395, 10);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(75, 20);
-            this.browseButton.TabIndex = 15;
+            this.browseButton.TabIndex = 0;
             this.browseButton.Text = "Browse";
             this.browseButton.UseVisualStyleBackColor = true;
             this.browseButton.Click += new System.EventHandler(this.browsebutton_Click);
@@ -132,7 +132,7 @@
             0});
             this.fromHours.Name = "fromHours";
             this.fromHours.Size = new System.Drawing.Size(35, 20);
-            this.fromHours.TabIndex = 16;
+            this.fromHours.TabIndex = 2;
             // 
             // fromMinutes
             // 
@@ -144,7 +144,7 @@
             0});
             this.fromMinutes.Name = "fromMinutes";
             this.fromMinutes.Size = new System.Drawing.Size(35, 20);
-            this.fromMinutes.TabIndex = 17;
+            this.fromMinutes.TabIndex = 3;
             // 
             // fromSeconds
             // 
@@ -156,7 +156,7 @@
             0});
             this.fromSeconds.Name = "fromSeconds";
             this.fromSeconds.Size = new System.Drawing.Size(35, 20);
-            this.fromSeconds.TabIndex = 18;
+            this.fromSeconds.TabIndex = 4;
             // 
             // toSeconds
             // 
@@ -168,7 +168,7 @@
             0});
             this.toSeconds.Name = "toSeconds";
             this.toSeconds.Size = new System.Drawing.Size(35, 20);
-            this.toSeconds.TabIndex = 21;
+            this.toSeconds.TabIndex = 7;
             // 
             // toMinutes
             // 
@@ -180,7 +180,7 @@
             0});
             this.toMinutes.Name = "toMinutes";
             this.toMinutes.Size = new System.Drawing.Size(35, 20);
-            this.toMinutes.TabIndex = 20;
+            this.toMinutes.TabIndex = 6;
             // 
             // toHours
             // 
@@ -192,7 +192,7 @@
             0});
             this.toHours.Name = "toHours";
             this.toHours.Size = new System.Drawing.Size(35, 20);
-            this.toHours.TabIndex = 19;
+            this.toHours.TabIndex = 5;
             // 
             // label1
             // 
@@ -264,7 +264,7 @@
             this.titleTextBox.Location = new System.Drawing.Point(48, 40);
             this.titleTextBox.Name = "titleTextBox";
             this.titleTextBox.Size = new System.Drawing.Size(421, 20);
-            this.titleTextBox.TabIndex = 29;
+            this.titleTextBox.TabIndex = 1;
             // 
             // label7
             // 

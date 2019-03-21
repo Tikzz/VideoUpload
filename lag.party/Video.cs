@@ -13,6 +13,7 @@ namespace VideoUpload
     {
         public const string authFilename = "lib/auth.json";
         public const string outputFilename = "output.mp4";
+        public const string imageFilename = "screen.png";
         public const string baseURL = "https://lag.party/v/";
 
         private readonly Form1 form;
@@ -20,7 +21,8 @@ namespace VideoUpload
         private readonly string titleText;
         private readonly decimal[] fromTime;
         private readonly decimal[] toTime;
-        private string nameURL;
+        private string endpoint;
+        private string imageURL;
 
         private GoogleCredential credential;
         private string bucketName = "lag-party";
@@ -51,8 +53,10 @@ namespace VideoUpload
         {
             form.AppendToConsole("Encoding video...");
             await this.Encode();
+            form.AppendToConsole("Uploading image...");
+            await this.UploadImageAsync();
             form.AppendToConsole("Uploading video...");
-            await this.UploadAsync();
+            await this.UploadVideoAsync();
             form.AppendToConsole("All done!");
             this.DeleteTempFile();
         }
@@ -103,7 +107,40 @@ namespace VideoUpload
             });
         }
 
-        private async Task UploadAsync()
+        private async Task UploadImageAsync()
+        {
+            string imageHash = HashFile(imageFilename);
+            if (FileExistsInCloud(imageHash)) {
+                form.AppendToConsole("Image already exists.");
+                return;
+            }
+
+            var imageObject = new Google.Apis.Storage.v1.Data.Object
+            {
+                Bucket = bucketName,
+                Name = imageHash,
+                ContentType = "image/png"
+            };
+
+            using (var stream = new System.IO.FileStream(imageFilename, System.IO.FileMode.Open))
+            {
+                var uploadObjectOptions = new Google.Cloud.Storage.V1.UploadObjectOptions
+                {
+                    ChunkSize = Google.Cloud.Storage.V1.UploadObjectOptions.MinimumChunkSize
+                };
+
+                await storage.UploadObjectAsync(
+                        imageObject,
+                        stream,
+                        uploadObjectOptions
+                    );
+
+                form.AppendToConsole("Done!");
+            }
+
+        }
+
+        private async Task UploadVideoAsync()
         {
 
             var dashTitle = DashString(titleText);
@@ -118,7 +155,6 @@ namespace VideoUpload
                 i++;
             }
 
-
             var videoObject = new Google.Apis.Storage.v1.Data.Object
             {
                 Bucket = bucketName,
@@ -128,11 +164,12 @@ namespace VideoUpload
 
             var metadataDict = new Dictionary<string, string>
             {
-                { "name", titleText },
-                { "name_url", fileName }
+                { "title", titleText },
+                { "endpoint", fileName },
+                { "image_url", HashFile(imageFilename) },
             };
             videoObject.Metadata = metadataDict;
-            nameURL = fileName;
+            endpoint = fileName;
 
             using (var stream = new System.IO.FileStream(outputFilename, System.IO.FileMode.Open))
             {
@@ -168,7 +205,7 @@ namespace VideoUpload
                     form.UploadProgressBar.Value = form.UploadProgressBar.Maximum;
                     form.UploadProgressBar.Visible = false;
                     form.URLtextBox.Visible = true;
-                    form.URLtextBox.Text = baseURL + nameURL;
+                    form.URLtextBox.Text = baseURL + endpoint;
                     form.AppendToConsole("Upload complete.");
                     break;
                 case Google.Apis.Upload.UploadStatus.Uploading:
@@ -211,10 +248,8 @@ namespace VideoUpload
             }
             catch (Google.GoogleApiException)
             {
-                System.Windows.Forms.MessageBox.Show("not exists");
                 return false;
             }
-            System.Windows.Forms.MessageBox.Show("exists");
             return true;
         }
 

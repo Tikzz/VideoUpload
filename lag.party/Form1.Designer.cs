@@ -62,6 +62,7 @@
             // 
             // cutUploadButton
             // 
+            this.cutUploadButton.Enabled = false;
             this.cutUploadButton.Location = new System.Drawing.Point(351, 101);
             this.cutUploadButton.Name = "cutUploadButton";
             this.cutUploadButton.Size = new System.Drawing.Size(119, 33);
@@ -109,6 +110,7 @@
             this.fileTextBox.Size = new System.Drawing.Size(377, 20);
             this.fileTextBox.TabIndex = 14;
             this.fileTextBox.Text = "Drag and drop a file here";
+            this.fileTextBox.TextChanged += new System.EventHandler(this.fileTextBox_TextChanged);
             this.fileTextBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.fileTextBox_DragDrop);
             this.fileTextBox.DragOver += new System.Windows.Forms.DragEventHandler(this.fileTextBox_DragOver);
             // 

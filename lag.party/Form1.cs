@@ -98,5 +98,17 @@ namespace VideoUpload
             NumericUpDown field = (NumericUpDown)sender;
             field.Select(0, 2);
         }
+
+        private void fileTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (fileTextBox.Text != "")
+            {
+                cutUploadButton.Enabled = true;
+            }
+            else
+            {
+                cutUploadButton.Enabled = false;
+            }
+        }
     }
 }

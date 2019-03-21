@@ -133,6 +133,8 @@
             this.fromHours.Name = "fromHours";
             this.fromHours.Size = new System.Drawing.Size(35, 20);
             this.fromHours.TabIndex = 2;
+            this.fromHours.Click += new System.EventHandler(this.numeric_SelectAll);
+            this.fromHours.Enter += new System.EventHandler(this.numeric_SelectAll);
             // 
             // fromMinutes
             // 
@@ -145,6 +147,8 @@
             this.fromMinutes.Name = "fromMinutes";
             this.fromMinutes.Size = new System.Drawing.Size(35, 20);
             this.fromMinutes.TabIndex = 3;
+            this.fromMinutes.Click += new System.EventHandler(this.numeric_SelectAll);
+            this.fromMinutes.Enter += new System.EventHandler(this.numeric_SelectAll);
             // 
             // fromSeconds
             // 
@@ -157,6 +161,8 @@
             this.fromSeconds.Name = "fromSeconds";
             this.fromSeconds.Size = new System.Drawing.Size(35, 20);
             this.fromSeconds.TabIndex = 4;
+            this.fromSeconds.Click += new System.EventHandler(this.numeric_SelectAll);
+            this.fromSeconds.Enter += new System.EventHandler(this.numeric_SelectAll);
             // 
             // toSeconds
             // 
@@ -169,6 +175,8 @@
             this.toSeconds.Name = "toSeconds";
             this.toSeconds.Size = new System.Drawing.Size(35, 20);
             this.toSeconds.TabIndex = 7;
+            this.toSeconds.Click += new System.EventHandler(this.numeric_SelectAll);
+            this.toSeconds.Enter += new System.EventHandler(this.numeric_SelectAll);
             // 
             // toMinutes
             // 
@@ -181,6 +189,8 @@
             this.toMinutes.Name = "toMinutes";
             this.toMinutes.Size = new System.Drawing.Size(35, 20);
             this.toMinutes.TabIndex = 6;
+            this.toMinutes.Click += new System.EventHandler(this.numeric_SelectAll);
+            this.toMinutes.Enter += new System.EventHandler(this.numeric_SelectAll);
             // 
             // toHours
             // 
@@ -193,6 +203,8 @@
             this.toHours.Name = "toHours";
             this.toHours.Size = new System.Drawing.Size(35, 20);
             this.toHours.TabIndex = 5;
+            this.toHours.Click += new System.EventHandler(this.numeric_SelectAll);
+            this.toHours.Enter += new System.EventHandler(this.numeric_SelectAll);
             // 
             // label1
             // 

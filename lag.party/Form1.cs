@@ -92,5 +92,11 @@ namespace VideoUpload
             textBox.SelectAll();
             textBox.Focus();
         }
+
+        private void numeric_SelectAll(object sender, EventArgs e)
+        {
+            NumericUpDown field = (NumericUpDown)sender;
+            field.Select(0, 2);
+        }
     }
 }

@@ -64,7 +64,7 @@ namespace VideoUpload
             toArg = String.Format("{0}:{1}:{2}.0", format(toTime[0]), format(toTime[1]), format(toTime[2]));
 
             string cmdArgs;
-            cmdArgs = String.Format("-ss {0} -to {1} -i {2} -c:v libx264 -preset slow -b:v 8000k "+outputFilename, fromArg, toArg, filePath);
+            cmdArgs = String.Format("-ss {0} -to {1} -i {2} -c:v libx264 -preset slow -b:v 8000k " + outputFilename, fromArg, toArg, filePath);
 
             this.DeleteTempFile();
 
@@ -73,20 +73,23 @@ namespace VideoUpload
                 Process p = new Process
                 {
                     StartInfo = {
-                    FileName = "bin/ffmpeg",
-                    Arguments = cmdArgs,
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                }
+                        FileName = "bin/ffmpeg",
+                        Arguments = cmdArgs,
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                    }
                 };
                 p.Start();
 
                 string processOutput = null;
                 while ((processOutput = p.StandardError.ReadLine()) != null)
                 {
-                    form.AppendToConsole(processOutput);
+                    if (form.InvokeRequired)
+                    {
+                        form.Invoke(new Action(() => form.AppendToConsole(processOutput)));
+                    }
                 }
 
                 p.WaitForExit();
@@ -97,7 +100,7 @@ namespace VideoUpload
         private async Task UploadAsync()
         {
             var credential = GoogleCredential.FromJson(File.ReadAllText(authFilename));
-            string bucketName = "tik-videos";
+            string bucketName = "lag-party";
             var storage = StorageClient.Create(credential);
 
             System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex("[^a-z0-9 -]");
@@ -113,7 +116,7 @@ namespace VideoUpload
                 }
             }
 
-            var newStorageObject = new Google.Apis.Storage.v1.Data.Object
+            var videoObject = new Google.Apis.Storage.v1.Data.Object
             {
                 Bucket = bucketName,
                 Name = hash + ".mp4",
@@ -125,7 +128,7 @@ namespace VideoUpload
                 { "name", titleText },
                 { "name_url", hash }
             };
-            newStorageObject.Metadata = metadataDict;
+            videoObject.Metadata = metadataDict;
             nameURL = hash;
 
             using (var stream = new System.IO.FileStream(outputFilename, System.IO.FileMode.Open))
@@ -139,12 +142,12 @@ namespace VideoUpload
 
                 var progressReporter = new System.Progress<Google.Apis.Upload.IUploadProgress>(OnUploadProgress);
                 await storage.UploadObjectAsync(
-                        newStorageObject,
+                        videoObject,
                         stream,
                         uploadObjectOptions,
                         progress: progressReporter
                     );
-                
+
             }
 
         }
@@ -162,7 +165,7 @@ namespace VideoUpload
                     form.UploadProgressBar.Value = form.UploadProgressBar.Maximum;
                     form.UploadProgressBar.Visible = false;
                     form.URLtextBox.Visible = true;
-                    form.URLtextBox.Text = baseURL+nameURL;
+                    form.URLtextBox.Text = baseURL + nameURL;
                     form.AppendToConsole("Upload complete.");
                     break;
                 case Google.Apis.Upload.UploadStatus.Uploading:

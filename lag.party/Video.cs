@@ -22,6 +22,10 @@ namespace VideoUpload
         private readonly decimal[] toTime;
         private string nameURL;
 
+        private GoogleCredential credential;
+        private string bucketName = "lag-party";
+        private StorageClient storage;
+
         public Video(Form1 form1, string path, string title, decimal[] from, decimal[] to)
         {
             form = form1;
@@ -29,6 +33,9 @@ namespace VideoUpload
             titleText = title;
             fromTime = from;
             toTime = to;
+
+            credential = GoogleCredential.FromJson(File.ReadAllText(authFilename));
+            storage = StorageClient.Create(credential);
         }
 
         public void DeleteTempFile()
@@ -96,40 +103,36 @@ namespace VideoUpload
             });
         }
 
-
         private async Task UploadAsync()
         {
-            var credential = GoogleCredential.FromJson(File.ReadAllText(authFilename));
-            string bucketName = "lag-party";
-            var storage = StorageClient.Create(credential);
 
-            System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex("[^a-z0-9 -]");
-            string dashName = rgx.Replace(titleText.Replace(" ", "-").ToLower(), "");
+            var dashTitle = DashString(titleText);
 
-            string hash;
-            using (var md5 = MD5.Create())
+            var baseFileName = dashTitle;
+            var fileName = baseFileName;
+
+            int i = 2;
+            while (FileExistsInCloud(fileName + ".webm"))
             {
-                using (var stream = File.OpenRead(outputFilename))
-                {
-                    var hashBytes = md5.ComputeHash(stream);
-                    hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
-                }
+                fileName = baseFileName + "-" + i;
+                i++;
             }
+
 
             var videoObject = new Google.Apis.Storage.v1.Data.Object
             {
                 Bucket = bucketName,
-                Name = hash + ".mp4",
-                ContentType = "video/mp4"
+                Name = fileName + ".webm",
+                ContentType = "video/webm"
             };
 
             var metadataDict = new Dictionary<string, string>
             {
                 { "name", titleText },
-                { "name_url", hash }
+                { "name_url", fileName }
             };
             videoObject.Metadata = metadataDict;
-            nameURL = hash;
+            nameURL = fileName;
 
             using (var stream = new System.IO.FileStream(outputFilename, System.IO.FileMode.Open))
             {
@@ -178,5 +181,42 @@ namespace VideoUpload
                     break;
             }
         }
+
+        private string HashFile(string fileName)
+        {
+            string hash;
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(outputFilename))
+                {
+                    var hashBytes = md5.ComputeHash(stream);
+                    hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+                }
+            }
+            return hash;
+        }
+
+        private string DashString(string text)
+        {
+            System.Text.RegularExpressions.Regex rgx = new System.Text.RegularExpressions.Regex("[^a-z0-9 -]");
+            string dashName = rgx.Replace(text.Replace(" ", "-").ToLower(), "");
+            return dashName;
+        }
+
+        private bool FileExistsInCloud(string objectName)
+        {
+            try
+            {
+                storage.GetObject(bucketName, objectName);
+            }
+            catch (Google.GoogleApiException)
+            {
+                System.Windows.Forms.MessageBox.Show("not exists");
+                return false;
+            }
+            System.Windows.Forms.MessageBox.Show("exists");
+            return true;
+        }
+
     }
 }

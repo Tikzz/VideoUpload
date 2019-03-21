@@ -12,7 +12,7 @@ namespace VideoUpload
     public class Video
     {
         public const string authFilename = "lib/auth.json";
-        public const string outputFilename = "output.mp4";
+        public const string outputFilename = "output.webm";
         public const string imageFilename = "screen.png";
         public const string baseURL = "https://lag.party/v/";
 
@@ -22,7 +22,6 @@ namespace VideoUpload
         private readonly decimal[] fromTime;
         private readonly decimal[] toTime;
         private string endpoint;
-        private string imageURL;
 
         private GoogleCredential credential;
         private string bucketName = "lag-party";
@@ -166,7 +165,7 @@ namespace VideoUpload
             {
                 { "title", titleText },
                 { "endpoint", fileName },
-                { "image_url", HashFile(imageFilename) },
+                { "image_endpoint", HashFile(imageFilename) },
             };
             videoObject.Metadata = metadataDict;
             endpoint = fileName;

@@ -75,7 +75,7 @@ namespace VideoUpload
             toArg = String.Format("{0}:{1}:{2}.0", format(toTime[0]), format(toTime[1]), format(toTime[2]));
 
             string cmdArgs;
-            cmdArgs = String.Format("-ss {0} -to {1} -i {2} -c:v libx264 -preset slow -b:v 8000k " + outputFilename, fromArg, toArg, filePath);
+            cmdArgs = String.Format("-ss {0} -to {1} -i \"{2}\" -c:v libvpx-vp9 -b:v 8000k -b:a 192k " + outputFilename, fromArg, toArg, filePath);
 
             this.DeleteTempFile();
 

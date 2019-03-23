@@ -12,8 +12,6 @@ namespace VideoUpload
     public class Video
     {
         public const string authFile = "lib/auth.json";
-        public const string outputTmpFile = "output.webm";
-        public const string outputExtension = ".webm";
         public const string imageFilename = "screen.png";
         public const string baseURL = "https://lag.party/v/";
 
@@ -22,29 +20,55 @@ namespace VideoUpload
         private readonly string titleText;
         private readonly decimal[] fromTime;
         private readonly decimal[] toTime;
+        private readonly int codecIndex;
         private string endpoint;
+
+        private string dashTitle;
+        private string batchPath;
+        private string outputFile;
+        private string outputExt;
 
         private GoogleCredential credential;
         private string bucketName = "lag-party";
         private StorageClient storage;
 
-        public Video(Form1 form1, string path, string title, decimal[] from, decimal[] to)
+        public Video(Form1 form1, string path, string title, decimal[] from, decimal[] to, int codec)
         {
             form = form1;
             filePath = path;
             titleText = title;
             fromTime = from;
             toTime = to;
+            codecIndex = codec;
+            dashTitle = DashString(titleText);
 
             credential = GoogleCredential.FromJson(File.ReadAllText(authFile));
             storage = StorageClient.Create(credential);
+
+            switch (codecIndex)
+            {
+                case 0:
+                    batchPath = "bin/vp9.bat";
+                    outputExt = ".webm";
+                    break;
+                case 1:
+                    batchPath = "bin/x264.bat";
+                    outputExt = ".mp4";
+                    break;
+                default:
+                    batchPath = "bin/vp9.bat";
+                    outputExt = ".webm";
+                    break;
+            }
+
+            outputFile = dashTitle + outputExt;
         }
 
         public void DeleteTempFile()
         {
-            if (File.Exists(outputTmpFile))
+            if (File.Exists(outputFile))
             {
-                File.Delete(outputTmpFile);
+                File.Delete(outputFile);
             }
         }
 
@@ -61,7 +85,7 @@ namespace VideoUpload
             this.DeleteTempFile();
         }
 
-        private async Task Encode()
+        public async Task Encode()
         {
             string fromArg;
             string toArg;
@@ -75,16 +99,15 @@ namespace VideoUpload
             toArg = String.Format("{0}:{1}:{2}", format(toTime[0]), format(toTime[1]), format(toTime[2]));
 
             string cmdArgs;
-            cmdArgs = String.Format("\"{0}\" {1} {2}", filePath, fromArg, toArg);
+            cmdArgs = String.Format("\"{0}\" {1} {2} {3}", filePath, fromArg, toArg, outputFile);
 
-            this.DeleteTempFile();
 
             await Task.Run(() =>
             {
                 Process p = new Process
                 {
                     StartInfo = {
-                        FileName = "bin/vp9.bat",
+                        FileName = batchPath,
                         Arguments = cmdArgs,
                         CreateNoWindow = true,
                         UseShellExecute = false,
@@ -107,10 +130,11 @@ namespace VideoUpload
             });
         }
 
-        private async Task UploadImageAsync()
+        public async Task UploadImageAsync()
         {
             string imageHash = HashFile(imageFilename);
-            if (FileExistsInCloud(imageHash)) {
+            if (FileExistsInCloud(imageHash))
+            {
                 form.AppendToConsole("Image already exists.");
                 return;
             }
@@ -140,16 +164,13 @@ namespace VideoUpload
 
         }
 
-        private async Task UploadVideoAsync()
+        public async Task UploadVideoAsync()
         {
-
-            var dashTitle = DashString(titleText);
-
             var baseFileName = dashTitle;
             var fileName = baseFileName;
 
             int i = 2;
-            while (FileExistsInCloud(fileName + outputExtension))
+            while (FileExistsInCloud(fileName + outputExt))
             {
                 fileName = baseFileName + "-" + i;
                 i++;
@@ -158,7 +179,7 @@ namespace VideoUpload
             var videoObject = new Google.Apis.Storage.v1.Data.Object
             {
                 Bucket = bucketName,
-                Name = fileName + outputExtension,
+                Name = fileName + outputExt,
                 ContentType = "video/webm"
             };
 
@@ -171,7 +192,7 @@ namespace VideoUpload
             videoObject.Metadata = metadataDict;
             endpoint = fileName;
 
-            using (var stream = new System.IO.FileStream(outputTmpFile, System.IO.FileMode.Open))
+            using (var stream = new System.IO.FileStream(outputFile, System.IO.FileMode.Open))
             {
                 form.UploadProgressBar.Maximum = (int)stream.Length;
 
@@ -224,7 +245,7 @@ namespace VideoUpload
             string hash;
             using (var md5 = MD5.Create())
             {
-                using (var stream = File.OpenRead(outputTmpFile))
+                using (var stream = File.OpenRead(outputFile))
                 {
                     var hashBytes = md5.ComputeHash(stream);
                     hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();

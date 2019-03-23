@@ -52,6 +52,9 @@
             this.titleTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.UploadProgressBar = new System.Windows.Forms.ProgressBar();
+            this.deleteCheckBox = new System.Windows.Forms.CheckBox();
+            this.uploadCheckBox = new System.Windows.Forms.CheckBox();
+            this.codecComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.fromHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fromMinutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fromSeconds)).BeginInit();
@@ -85,7 +88,7 @@
             this.outputConsole.BackColor = System.Drawing.Color.Black;
             this.outputConsole.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.outputConsole.ForeColor = System.Drawing.Color.White;
-            this.outputConsole.Location = new System.Drawing.Point(12, 140);
+            this.outputConsole.Location = new System.Drawing.Point(11, 140);
             this.outputConsole.Multiline = true;
             this.outputConsole.Name = "outputConsole";
             this.outputConsole.ReadOnly = true;
@@ -297,11 +300,51 @@
             this.UploadProgressBar.TabIndex = 31;
             this.UploadProgressBar.Visible = false;
             // 
+            // deleteCheckBox
+            // 
+            this.deleteCheckBox.AutoSize = true;
+            this.deleteCheckBox.Checked = true;
+            this.deleteCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.deleteCheckBox.Location = new System.Drawing.Point(152, 394);
+            this.deleteCheckBox.Name = "deleteCheckBox";
+            this.deleteCheckBox.Size = new System.Drawing.Size(134, 17);
+            this.deleteCheckBox.TabIndex = 32;
+            this.deleteCheckBox.Text = "Delete cut after upload";
+            this.deleteCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // uploadCheckBox
+            // 
+            this.uploadCheckBox.AutoSize = true;
+            this.uploadCheckBox.Checked = true;
+            this.uploadCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.uploadCheckBox.Location = new System.Drawing.Point(12, 394);
+            this.uploadCheckBox.Name = "uploadCheckBox";
+            this.uploadCheckBox.Size = new System.Drawing.Size(115, 17);
+            this.uploadCheckBox.TabIndex = 33;
+            this.uploadCheckBox.Text = "Upload to lag.party";
+            this.uploadCheckBox.UseVisualStyleBackColor = true;
+            this.uploadCheckBox.CheckedChanged += new System.EventHandler(this.uploadCheckBox_CheckedChanged);
+            // 
+            // codecComboBox
+            // 
+            this.codecComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.codecComboBox.FormattingEnabled = true;
+            this.codecComboBox.Items.AddRange(new object[] {
+            "VP9 (slow)",
+            "x264 (fast)"});
+            this.codecComboBox.Location = new System.Drawing.Point(348, 392);
+            this.codecComboBox.Name = "codecComboBox";
+            this.codecComboBox.Size = new System.Drawing.Size(121, 21);
+            this.codecComboBox.TabIndex = 34;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 393);
+            this.ClientSize = new System.Drawing.Size(482, 421);
+            this.Controls.Add(this.codecComboBox);
+            this.Controls.Add(this.uploadCheckBox);
+            this.Controls.Add(this.deleteCheckBox);
             this.Controls.Add(this.UploadProgressBar);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.titleTextBox);
@@ -365,6 +408,9 @@
         public System.Windows.Forms.ProgressBar UploadProgressBar;
         public System.Windows.Forms.TextBox URLtextBox;
         private System.Windows.Forms.TextBox titleTextBox;
+        private System.Windows.Forms.CheckBox deleteCheckBox;
+        private System.Windows.Forms.CheckBox uploadCheckBox;
+        private System.Windows.Forms.ComboBox codecComboBox;
     }
 }
 

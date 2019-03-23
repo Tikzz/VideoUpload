@@ -14,6 +14,7 @@ namespace VideoUpload
         public Form1()
         {
             InitializeComponent();
+            codecComboBox.SelectedIndex = 0;
         }
 
         private void browsebutton_Click(object sender, EventArgs e)
@@ -60,12 +61,14 @@ namespace VideoUpload
                 return;
             }
 
-            if (totalToSeconds < totalFromSeconds) {
+            if (totalToSeconds < totalFromSeconds)
+            {
                 System.Windows.Forms.MessageBox.Show("The start timestamp can't be higher than the end.", "Error");
                 return;
             }
 
-            if (totalFromSeconds == totalToSeconds) {
+            if (totalFromSeconds == totalToSeconds)
+            {
                 System.Windows.Forms.MessageBox.Show("The total video duration can't be 0. Check your start and end times.", "Error");
                 return;
             }
@@ -78,8 +81,22 @@ namespace VideoUpload
             decimal[] to = new decimal[] { toHours.Value, toMinutes.Value, toSeconds.Value };
 
             Video video;
-            video = new Video(this, fileTextBox.Text, titleTextBox.Text,  from, to);
-            await video.Start();
+            video = new Video(this, fileTextBox.Text, titleTextBox.Text, from, to, codecComboBox.SelectedIndex);
+            this.AppendToConsole("Encoding video...");
+            await video.Encode();
+
+            if (uploadCheckBox.Checked)
+            {
+                this.AppendToConsole("Uploading image...");
+                await video.UploadImageAsync();
+                this.AppendToConsole("Uploading video...");
+                await video.UploadVideoAsync();
+            }
+            this.AppendToConsole("All done!");
+            if (deleteCheckBox.Checked)
+            {
+                video.DeleteTempFile();
+            }
 
             browseButton.Enabled = true;
             cutUploadButton.Enabled = true;
@@ -108,6 +125,18 @@ namespace VideoUpload
             else
             {
                 cutUploadButton.Enabled = false;
+            }
+        }
+
+        private void uploadCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!uploadCheckBox.Checked)
+            {
+                deleteCheckBox.Checked = false;
+                deleteCheckBox.Enabled = false;
+            } else
+            {
+                deleteCheckBox.Enabled = true;
             }
         }
     }

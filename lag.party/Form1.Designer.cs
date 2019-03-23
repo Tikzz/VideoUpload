@@ -55,6 +55,8 @@
             this.deleteCheckBox = new System.Windows.Forms.CheckBox();
             this.uploadCheckBox = new System.Windows.Forms.CheckBox();
             this.codecComboBox = new System.Windows.Forms.ComboBox();
+            this.upscaleCheckBox = new System.Windows.Forms.CheckBox();
+            this.cutCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.fromHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fromMinutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fromSeconds)).BeginInit();
@@ -66,7 +68,7 @@
             // cutUploadButton
             // 
             this.cutUploadButton.Enabled = false;
-            this.cutUploadButton.Location = new System.Drawing.Point(351, 101);
+            this.cutUploadButton.Location = new System.Drawing.Point(399, 101);
             this.cutUploadButton.Name = "cutUploadButton";
             this.cutUploadButton.Size = new System.Drawing.Size(119, 33);
             this.cutUploadButton.TabIndex = 8;
@@ -77,7 +79,7 @@
             // fromLabel
             // 
             this.fromLabel.AutoSize = true;
-            this.fromLabel.Location = new System.Drawing.Point(9, 74);
+            this.fromLabel.Location = new System.Drawing.Point(77, 74);
             this.fromLabel.Name = "fromLabel";
             this.fromLabel.Size = new System.Drawing.Size(33, 13);
             this.fromLabel.TabIndex = 4;
@@ -92,13 +94,13 @@
             this.outputConsole.Multiline = true;
             this.outputConsole.Name = "outputConsole";
             this.outputConsole.ReadOnly = true;
-            this.outputConsole.Size = new System.Drawing.Size(458, 241);
+            this.outputConsole.Size = new System.Drawing.Size(507, 241);
             this.outputConsole.TabIndex = 9;
             // 
             // toLabel
             // 
             this.toLabel.AutoSize = true;
-            this.toLabel.Location = new System.Drawing.Point(266, 74);
+            this.toLabel.Location = new System.Drawing.Point(314, 74);
             this.toLabel.Name = "toLabel";
             this.toLabel.Size = new System.Drawing.Size(23, 13);
             this.toLabel.TabIndex = 13;
@@ -110,7 +112,7 @@
             this.fileTextBox.Location = new System.Drawing.Point(12, 10);
             this.fileTextBox.Name = "fileTextBox";
             this.fileTextBox.ReadOnly = true;
-            this.fileTextBox.Size = new System.Drawing.Size(377, 20);
+            this.fileTextBox.Size = new System.Drawing.Size(425, 20);
             this.fileTextBox.TabIndex = 14;
             this.fileTextBox.Text = "Drag and drop a file here";
             this.fileTextBox.TextChanged += new System.EventHandler(this.fileTextBox_TextChanged);
@@ -119,7 +121,7 @@
             // 
             // browseButton
             // 
-            this.browseButton.Location = new System.Drawing.Point(395, 10);
+            this.browseButton.Location = new System.Drawing.Point(443, 10);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(75, 20);
             this.browseButton.TabIndex = 0;
@@ -129,7 +131,7 @@
             // 
             // fromHours
             // 
-            this.fromHours.Location = new System.Drawing.Point(48, 72);
+            this.fromHours.Location = new System.Drawing.Point(116, 72);
             this.fromHours.Maximum = new decimal(new int[] {
             59,
             0,
@@ -143,7 +145,7 @@
             // 
             // fromMinutes
             // 
-            this.fromMinutes.Location = new System.Drawing.Point(108, 72);
+            this.fromMinutes.Location = new System.Drawing.Point(176, 72);
             this.fromMinutes.Maximum = new decimal(new int[] {
             59,
             0,
@@ -157,7 +159,7 @@
             // 
             // fromSeconds
             // 
-            this.fromSeconds.Location = new System.Drawing.Point(170, 72);
+            this.fromSeconds.Location = new System.Drawing.Point(238, 72);
             this.fromSeconds.Maximum = new decimal(new int[] {
             59,
             0,
@@ -171,7 +173,7 @@
             // 
             // toSeconds
             // 
-            this.toSeconds.Location = new System.Drawing.Point(417, 72);
+            this.toSeconds.Location = new System.Drawing.Point(465, 72);
             this.toSeconds.Maximum = new decimal(new int[] {
             59,
             0,
@@ -185,7 +187,7 @@
             // 
             // toMinutes
             // 
-            this.toMinutes.Location = new System.Drawing.Point(355, 72);
+            this.toMinutes.Location = new System.Drawing.Point(403, 72);
             this.toMinutes.Maximum = new decimal(new int[] {
             59,
             0,
@@ -199,7 +201,7 @@
             // 
             // toHours
             // 
-            this.toHours.Location = new System.Drawing.Point(295, 72);
+            this.toHours.Location = new System.Drawing.Point(343, 72);
             this.toHours.Maximum = new decimal(new int[] {
             59,
             0,
@@ -214,7 +216,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(89, 74);
+            this.label1.Location = new System.Drawing.Point(157, 74);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(13, 13);
             this.label1.TabIndex = 22;
@@ -223,7 +225,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(149, 74);
+            this.label2.Location = new System.Drawing.Point(217, 74);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 13);
             this.label2.TabIndex = 23;
@@ -232,7 +234,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(211, 74);
+            this.label3.Location = new System.Drawing.Point(279, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(12, 13);
             this.label3.TabIndex = 24;
@@ -241,7 +243,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(458, 74);
+            this.label4.Location = new System.Drawing.Point(506, 74);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(12, 13);
             this.label4.TabIndex = 27;
@@ -250,7 +252,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(396, 74);
+            this.label5.Location = new System.Drawing.Point(444, 74);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(15, 13);
             this.label5.TabIndex = 26;
@@ -259,7 +261,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(336, 74);
+            this.label6.Location = new System.Drawing.Point(384, 74);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(13, 13);
             this.label6.TabIndex = 25;
@@ -280,7 +282,7 @@
             // 
             this.titleTextBox.Location = new System.Drawing.Point(48, 40);
             this.titleTextBox.Name = "titleTextBox";
-            this.titleTextBox.Size = new System.Drawing.Size(421, 20);
+            this.titleTextBox.Size = new System.Drawing.Size(470, 20);
             this.titleTextBox.TabIndex = 1;
             // 
             // label7
@@ -296,7 +298,7 @@
             // 
             this.UploadProgressBar.Location = new System.Drawing.Point(12, 101);
             this.UploadProgressBar.Name = "UploadProgressBar";
-            this.UploadProgressBar.Size = new System.Drawing.Size(333, 33);
+            this.UploadProgressBar.Size = new System.Drawing.Size(381, 33);
             this.UploadProgressBar.TabIndex = 31;
             this.UploadProgressBar.Visible = false;
             // 
@@ -305,7 +307,7 @@
             this.deleteCheckBox.AutoSize = true;
             this.deleteCheckBox.Checked = true;
             this.deleteCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.deleteCheckBox.Location = new System.Drawing.Point(152, 394);
+            this.deleteCheckBox.Location = new System.Drawing.Point(133, 394);
             this.deleteCheckBox.Name = "deleteCheckBox";
             this.deleteCheckBox.Size = new System.Drawing.Size(134, 17);
             this.deleteCheckBox.TabIndex = 32;
@@ -331,17 +333,44 @@
             this.codecComboBox.FormattingEnabled = true;
             this.codecComboBox.Items.AddRange(new object[] {
             "VP9 (slow)",
-            "x264 (fast)"});
-            this.codecComboBox.Location = new System.Drawing.Point(348, 392);
+            "x264 (fast)",
+            "VP9 (overkill)"});
+            this.codecComboBox.Location = new System.Drawing.Point(385, 392);
             this.codecComboBox.Name = "codecComboBox";
-            this.codecComboBox.Size = new System.Drawing.Size(121, 21);
+            this.codecComboBox.Size = new System.Drawing.Size(133, 21);
             this.codecComboBox.TabIndex = 34;
+            this.codecComboBox.SelectedIndexChanged += new System.EventHandler(this.codecComboBox_SelectedIndexChanged);
+            // 
+            // upscaleCheckBox
+            // 
+            this.upscaleCheckBox.AutoSize = true;
+            this.upscaleCheckBox.Location = new System.Drawing.Point(269, 394);
+            this.upscaleCheckBox.Name = "upscaleCheckBox";
+            this.upscaleCheckBox.Size = new System.Drawing.Size(110, 17);
+            this.upscaleCheckBox.TabIndex = 35;
+            this.upscaleCheckBox.Text = "Upscale to 1440p";
+            this.upscaleCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // cutCheckBox
+            // 
+            this.cutCheckBox.AutoSize = true;
+            this.cutCheckBox.Checked = true;
+            this.cutCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cutCheckBox.Location = new System.Drawing.Point(12, 73);
+            this.cutCheckBox.Name = "cutCheckBox";
+            this.cutCheckBox.Size = new System.Drawing.Size(42, 17);
+            this.cutCheckBox.TabIndex = 36;
+            this.cutCheckBox.Text = "Cut";
+            this.cutCheckBox.UseVisualStyleBackColor = true;
+            this.cutCheckBox.CheckedChanged += new System.EventHandler(this.cutCheckBox_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 421);
+            this.ClientSize = new System.Drawing.Size(530, 421);
+            this.Controls.Add(this.cutCheckBox);
+            this.Controls.Add(this.upscaleCheckBox);
             this.Controls.Add(this.codecComboBox);
             this.Controls.Add(this.uploadCheckBox);
             this.Controls.Add(this.deleteCheckBox);
@@ -411,6 +440,8 @@
         private System.Windows.Forms.CheckBox deleteCheckBox;
         private System.Windows.Forms.CheckBox uploadCheckBox;
         private System.Windows.Forms.ComboBox codecComboBox;
+        private System.Windows.Forms.CheckBox upscaleCheckBox;
+        private System.Windows.Forms.CheckBox cutCheckBox;
     }
 }
 

@@ -27,12 +27,14 @@ namespace VideoUpload
         private string batchPath;
         private string outputFile;
         private string outputExt;
+        private bool upscale1440p;
+        private bool cutVideo;
 
         private GoogleCredential credential;
         private string bucketName = "lag-party";
         private StorageClient storage;
 
-        public Video(Form1 form1, string path, string title, decimal[] from, decimal[] to, int codec)
+        public Video(Form1 form1, string path, string title, decimal[] from, decimal[] to, int codec, bool upscaleFlag, bool cut)
         {
             form = form1;
             filePath = path;
@@ -41,6 +43,8 @@ namespace VideoUpload
             toTime = to;
             codecIndex = codec;
             dashTitle = DashString(titleText);
+            upscale1440p = upscaleFlag;
+            cutVideo = cut;
 
             credential = GoogleCredential.FromJson(File.ReadAllText(authFile));
             storage = StorageClient.Create(credential);
@@ -54,6 +58,10 @@ namespace VideoUpload
                 case 1:
                     batchPath = "bin/x264.bat";
                     outputExt = ".mp4";
+                    break;
+                case 3:
+                    batchPath = "bin/overkill.bat";
+                    outputExt = ".webm";
                     break;
                 default:
                     batchPath = "bin/vp9.bat";
@@ -95,12 +103,22 @@ namespace VideoUpload
                 return String.Format("{0:00}", n);
             }
 
-            fromArg = String.Format("{0}:{1}:{2}", format(fromTime[0]), format(fromTime[1]), format(fromTime[2]));
-            toArg = String.Format("{0}:{1}:{2}", format(toTime[0]), format(toTime[1]), format(toTime[2]));
-
             string cmdArgs;
-            cmdArgs = String.Format("\"{0}\" {1} {2} {3}", filePath, fromArg, toArg, outputFile);
+            if (cutVideo)
+            {
+                fromArg = String.Format("\"-ss {0}:{1}:{2}\"", format(fromTime[0]), format(fromTime[1]), format(fromTime[2]));
+                toArg = String.Format("\"-to {0}:{1}:{2}\"", format(toTime[0]), format(toTime[1]), format(toTime[2]));
 
+                cmdArgs = String.Format("\"{0}\" {1} {2} {3}", filePath, fromArg, toArg, outputFile);
+            } else
+            {
+                cmdArgs = String.Format("\"{0}\" \"\" \"\" {1}", filePath, outputFile);
+            }
+
+            if (upscale1440p)
+            {
+                cmdArgs += " \"-vf scale=2560:1440\"";
+            }
 
             await Task.Run(() =>
             {
